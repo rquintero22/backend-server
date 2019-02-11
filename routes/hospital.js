@@ -8,6 +8,41 @@ var app = express();
 var Hospital = require('../models/hospital');
 
 /**
+ * Obtener el hospital por id
+ */
+app.get('/:id', (req, res) => {
+    var id = req.params.id;
+
+    Hospital.findById(id)
+        .populate('usuario', 'nombre img email')
+        .exec((err, hospital) => {
+
+            if (err) {
+                return res.status(500).json({
+                    ok: false,
+                    mensaje: 'Error al buscar hospital.',
+                    errors: err
+                });
+            }
+
+            if (!hospital) {
+                return res.status(400).json({
+                    ok: false,
+                    mensaje: 'El hospital con el id ' + id + ' no existe.',
+                    errors: { message: 'No se encontró un hospital con ese id' }
+                });
+            }
+
+
+            res.status(200).json({
+                ok: true,
+                hospital: hospital
+            });
+        })
+});
+
+
+/**
  * Obtener todos los hospitales
  */
 app.get('/', (req, res, next) => {

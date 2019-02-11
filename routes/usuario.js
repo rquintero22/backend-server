@@ -11,7 +11,7 @@ var app = express();
 var Usuario = require('../models/usuario');
 
 /**
- * Obtener todos los usaurios
+ * Obtener todos los usuarios
  */
 app.get('/', (req, res, next) => {
 
@@ -19,7 +19,7 @@ app.get('/', (req, res, next) => {
 
     desde = Number(desde);
 
-    Usuario.find({}, 'nombre email img role')
+    Usuario.find({}, 'nombre email img role google')
         .skip(desde)
         .limit(5)
         .exec((err, usuarios) => {
@@ -51,7 +51,7 @@ app.get('/', (req, res, next) => {
 /**
  * Actualizar un usuario
  */
-app.put('/:id', mdAutenticacicon.verificaToken, (req, res) => {
+app.put('/:id', [mdAutenticacicon.verificaToken, mdAutenticacicon.verificaADMIN_o_MismoUsuario], (req, res) => {
     var id = req.params.id;
     var body = req.body;
 
@@ -102,7 +102,7 @@ app.put('/:id', mdAutenticacicon.verificaToken, (req, res) => {
 /**
  * Crear un usuario
  */
-app.post('/', mdAutenticacicon.verificaToken, (req, res) => {
+app.post('/', (req, res) => {
 
     var body = req.body;
 
@@ -138,7 +138,7 @@ app.post('/', mdAutenticacicon.verificaToken, (req, res) => {
 /**
  * Eliminar un usuario por el id
  */
-app.delete('/:id', mdAutenticacicon.verificaToken, (req, res) => {
+app.delete('/:id', [mdAutenticacicon.verificaToken, mdAutenticacicon.verificaADMIN_ROLE], (req, res) => {
     var id = req.params.id;
 
     Usuario.findByIdAndRemove(id, (err, usuarioEliminado) => {
