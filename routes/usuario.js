@@ -45,9 +45,6 @@ app.get('/', (req, res, next) => {
 });
 
 
-
-
-
 /**
  * Actualizar un usuario
  */

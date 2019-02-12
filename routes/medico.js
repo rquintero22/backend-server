@@ -19,7 +19,7 @@ app.get('/', (req, res, next) => {
     Medico.find({}, )
         .skip(desde)
         .limit(5)
-        .populate('usuario', 'nombre email')
+        .populate('usuario', 'nombre email img')
         .populate('hospital')
         .exec((err, medicos) => {
             if (err) {
